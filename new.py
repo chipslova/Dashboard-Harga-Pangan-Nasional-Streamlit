@@ -148,6 +148,7 @@ st.markdown(
 # ==============================
 # HEADER
 # ==============================
+st.markdown("<br>", unsafe_allow_html=True)
 st.markdown('<div class="big-title">Dashboard Harga Pangan Konsumen di Indonesia</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="subtitle">'
