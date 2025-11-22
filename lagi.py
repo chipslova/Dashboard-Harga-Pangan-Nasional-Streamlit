@@ -5,29 +5,31 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # ==============================
-# CONFIG & GLOBAL STYLE
+# CONFIG
 # ==============================
 st.set_page_config(
     page_title="Dashboard Harga Pangan Nasional",
     layout="wide",
-    page_icon="🍚"
+    page_icon="🍢"
 )
 
-# ---- Custom CSS: Tema Pangan Nasional Indonesia ----
+# ==============================
+# GLOBAL STYLE – STREET FOOD THEME
+# ==============================
 st.markdown(
     """
     <style>
-    /* Background umum: krem + merah lembut (nuansa kuliner / nasional) */
+    /* Background: vibes pasar malam / street food */
     .stApp {
-        background: radial-gradient(circle at top left, #fff7ed 0, #fef2f2 35%, #fee2e2 70%, #fef9c3 100%);
+        background: radial-gradient(circle at top left, #fffbeb 0, #ffe4e6 30%, #fed7aa 55%, #fef3c7 80%, #faf5ff 100%);
         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: #111827;
     }
 
-    /* Area paling atas (share/GitHub) biar nyatu */
+    /* Header (bagian Share/GitHub) disamain dengan background */
     header[data-testid="stHeader"] {
-        background: radial-gradient(circle at top left, #fff7ed 0, #fef2f2 35%, #fee2e2 70%, #fef9c3 100%);
-        border-bottom: 1px solid rgba(248, 113, 113, 0.35);
+        background: radial-gradient(circle at top left, #fffbeb 0, #ffe4e6 30%, #fed7aa 55%, #fef3c7 80%, #faf5ff 100%);
+        border-bottom: 1px solid rgba(248, 113, 113, 0.3);
     }
 
     .block-container {
@@ -36,15 +38,28 @@ st.markdown(
         max-width: 1200px;
     }
 
-    /* Judul utama: merah-putih-oranye, rasa poster nasional */
-    .big-title {
+    /* Judul dengan sedikit flag + street food */
+    .title-flag {
         font-size: 2.35rem;
         font-weight: 800;
         letter-spacing: -0.03em;
-        background: linear-gradient(120deg,#b91c1c,#f97316,#facc15);
+        background: linear-gradient(120deg,#b91c1c,#f97316,#eab308);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .title-flag::before {
+        content: "";
+        display: inline-block;
+        width: 26px;
+        height: 18px;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px rgba(148,163,184,0.7);
+        background: linear-gradient(to bottom, #dc2626 0, #dc2626 50%, #f9fafb 50%, #f9fafb 100%);
     }
 
     .subtitle {
@@ -53,14 +68,62 @@ st.markdown(
         margin-bottom: 0.8rem;
     }
 
-    /* Badge kecil bertema pangan */
+    /* Hero card: ilustrasi street food */
+    .hero-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 1rem;
+        background:
+            radial-gradient(circle at top left, rgba(248, 250, 252, 0.9), rgba(254, 243, 199, 0.8)),
+            linear-gradient(120deg, rgba(248, 113, 113, 0.14), rgba(234, 179, 8, 0.14));
+        border: 1px solid rgba(248, 113, 113, 0.4);
+        box-shadow: 0 18px 40px rgba(180, 83, 9, 0.20);
+        margin-bottom: 0.9rem;
+    }
+
+    .hero-emoji {
+        font-size: 2.4rem;
+        filter: drop-shadow(0 6px 8px rgba(0,0,0,0.18));
+    }
+
+    .hero-text-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #7f1d1d;
+        margin-bottom: 0.1rem;
+    }
+
+    .hero-text-sub {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+
+    .hero-chip-row {
+        margin-top: 0.35rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .hero-chip {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(248, 250, 252, 0.9);
+        border: 1px dashed rgba(248, 113, 113, 0.6);
+        color: #7f1d1d;
+    }
+
+    /* Badges */
     .pill {
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
         padding: 0.25rem 0.75rem;
         border-radius: 999px;
-        background: rgba(248, 113, 113, 0.06);
+        background: rgba(248, 113, 113, 0.08);
         border: 1px solid rgba(220, 38, 38, 0.25);
         color: #7f1d1d;
         font-size: 0.78rem;
@@ -69,33 +132,40 @@ st.markdown(
     }
 
     .pill-green {
-        background: rgba(22, 163, 74, 0.06);
-        border: 1px solid rgba(22, 163, 74, 0.25);
+        background: rgba(22, 163, 74, 0.08);
+        border-color: rgba(22, 163, 74, 0.3);
         color: #14532d;
     }
 
-    .pill-gold {
-        background: rgba(250, 204, 21, 0.08);
-        border: 1px solid rgba(202, 138, 4, 0.3);
-        color: #92400e;
+    .pill-purple {
+        background: rgba(147, 51, 234, 0.08);
+        border-color: rgba(147, 51, 234, 0.3);
+        color: #581c87;
     }
 
-    /* Card utama tiap section */
+    /* Section card */
     .section-card {
-        background: rgba(255, 255, 255, 0.96);
+        background: rgba(255, 255, 255, 0.97);
         border-radius: 1.05rem;
         padding: 1.2rem 1.2rem 1rem 1.2rem;
         border: 1px solid rgba(248, 113, 113, 0.28);
-        box-shadow: 0 20px 38px rgba(127, 29, 29, 0.10);
+        box-shadow: 0 18px 40px rgba(127, 29, 29, 0.14);
         margin-bottom: 1.2rem;
     }
 
     .section-title {
         font-size: 1.08rem;
-        font-weight: 700;
+        font-weight: 750;
         color: #7f1d1d;
         margin-bottom: 0.1rem;
         letter-spacing: -0.01em;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .section-title span.icon {
+        font-size: 1.1rem;
     }
 
     .section-caption {
@@ -110,7 +180,7 @@ st.markdown(
         margin-top: 0.3rem;
     }
 
-    /* Tabs: merah-putih pill style */
+    /* Tabs: street-food pill style */
     .stTabs [data-baseweb="tab-list"] {
         gap: 0.3rem;
         padding-bottom: 0.25rem;
@@ -132,13 +202,13 @@ st.markdown(
         box-shadow: 0 10px 20px rgba(127, 29, 29, 0.25);
     }
 
-    /* Metric cards: kayak kartu ringkasan laporan */
+    /* Metric cards: kayak label harga di kios */
     div[data-testid="stMetric"] {
         background: #fffbeb;
         padding: 0.75rem 0.85rem;
         border-radius: 0.9rem;
         border: 1px solid rgba(250, 204, 21, 0.7);
-        box-shadow: 0 14px 26px rgba(202, 138, 4, 0.18);
+        box-shadow: 0 14px 26px rgba(202, 138, 4, 0.20);
     }
 
     div[data-testid="stMetric"] > label {
@@ -150,9 +220,9 @@ st.markdown(
         color: #111827;
     }
 
-    /* Slider: warna cabai & daun (merah - hijau) */
+    /* Slider: skala cabai–sate–daun */
     .stSlider > div > div > div {
-        background: linear-gradient(90deg,#b91c1c,#f97316,#16a34a);
+        background: linear-gradient(90deg,#b91c1c,#f97316,#22c55e);
     }
 
     .stSelectbox, .stMultiSelect {
@@ -171,18 +241,39 @@ st.markdown(
 # ==============================
 # HEADER
 # ==============================
-# sedikit jarak supaya judul tidak nempel ke atas
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
-    '<div class="big-title">🇮🇩 Dashboard Harga Pangan Konsumen di Indonesia</div>',
+    '<div class="title-flag">Dashboard Harga Pangan Konsumen di Indonesia 🍜</div>',
     unsafe_allow_html=True
 )
 st.markdown(
     '<div class="subtitle">'
-    'Analisis pola, tren, dan perbandingan harga komoditas pangan utama di 505 Kabupaten/Kota Indonesia '
-    '<span style="color:#7f1d1d;font-weight:600;">(Januari 2024 – Agustus 2025)</span>'
+    'Analisis harga beras, cabai, bawang, minyak goreng, dan komoditas pangan lain '
+    'di 505 Kabupaten/Kota Indonesia (Januari 2024 – Agustus 2025).'
     '</div>',
+    unsafe_allow_html=True
+)
+
+# Hero card ilustrasi street food
+st.markdown(
+    """
+    <div class="hero-card">
+      <div class="hero-emoji">🍜🍢🍚🧋</div>
+      <div>
+        <div class="hero-text-title">“Street Food Edition” – baca data harga pangan dengan nuansa jajanan kaki lima.</div>
+        <div class="hero-text-sub">
+          Setiap titik data di sini adalah cerita harga di warteg, angkringan, tukang gorengan, hingga pasar tradisional.
+        </div>
+        <div class="hero-chip-row">
+          <div class="hero-chip">Harga beras & bahan pokok</div>
+          <div class="hero-chip">Lonjakan cabai & bawang</div>
+          <div class="hero-chip">Perbandingan antar kab/kota</div>
+          <div class="hero-chip">Korelasi antar komoditas</div>
+        </div>
+      </div>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
@@ -228,21 +319,21 @@ def load_geo():
 clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
-# Badge info kecil: tema pangan & nasional
+# Badges kecil
 col_badge1, col_badge2 = st.columns([2, 1])
 with col_badge1:
     st.markdown(
         """
-        <span class="pill">🍚 Rata-rata harga beras & pangan pokok</span>
-        <span class="pill pill-green">🌶️ Sebaran harga bumbu & protein</span>
-        <span class="pill pill-gold">📊 Monitoring stabilitas pangan nasional</span>
+        <span class="pill">🍚 Harga pangan pokok</span>
+        <span class="pill pill-green">🌶️ Bumbu & protein hewani</span>
+        <span class="pill pill-purple">📊 Analitik tren & korelasi</span>
         """,
         unsafe_allow_html=True
     )
 with col_badge2:
     st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
 
-# sedikit ringkasan angka
+# Ringkasan angka
 n_komoditas = len(komoditas_cols)
 n_periode = clean["Periode"].nunique()
 if "Kab/Kota" in clean.columns:
@@ -252,9 +343,9 @@ else:
     n_kabkota = clean[obj_cols[0]].nunique() if len(obj_cols) > 0 else 505
 
 mcol1, mcol2, mcol3 = st.columns(3)
-mcol1.metric("Jumlah komoditas dipantau", f"{n_komoditas}")
+mcol1.metric("Komoditas dipantau", f"{n_komoditas}")
 mcol2.metric("Periode pengamatan", f"{n_periode}")
-mcol3.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
+mcol3.metric("Kabupaten/Kota", f"{n_kabkota}")
 
 # Kelompok komoditas (dipakai di Tab Tren Nasional)
 groups = {
@@ -281,16 +372,19 @@ tab1, tab2, tab3 = st.tabs([
 # ==============================
 with tab1:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-caption">Pantau pergerakan harga beras, cabai, bawang, minyak goreng, dan komoditas pangan lain secara nasional dari waktu ke waktu.</div>',
+        '<div class="section-title"><span class="icon">📈</span>'
+        'Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="section-caption">Pantau pergerakan harga beras, cabai, bawang, minyak goreng, dan komoditas lain di tingkat nasional.</div>',
         unsafe_allow_html=True
     )
 
     min_date = clean["Periode"].min()
     max_date = clean["Periode"].max()
 
-    # Slider full-width (periode)
     start_date, end_date = st.slider(
         "Periode analisis",
         min_value=min_date.date(),
@@ -299,7 +393,6 @@ with tab1:
         format="MMM YYYY"
     )
 
-    # Kolom untuk pengaturan komoditas
     col_f1, col_f2 = st.columns([1, 2])
 
     with col_f1:
@@ -319,17 +412,14 @@ with tab1:
             key="komoditas_tren"
         )
 
-    # Filter data sesuai periode
     mask_clean_tren = clean["Periode"].dt.date.between(start_date, end_date)
     clean_tren = clean[mask_clean_tren].copy()
 
     if clean_tren.empty:
         st.warning("Tidak ada data untuk periode yang dipilih.")
     else:
-        # Rata-rata nasional per periode
         avg_trend = clean_tren.groupby("Periode")[komoditas_cols].mean().reset_index()
 
-        # Grafik tren per komoditas
         st.markdown("#### Tren Komoditas Terpilih")
 
         if not selected_koms:
@@ -366,7 +456,6 @@ with tab1:
             )
             st.plotly_chart(fig_trend, use_container_width=True)
 
-        # Harga rata-rata nasional
         if selected_koms:
             monthly_avg_all = avg_trend[selected_koms].mean(axis=1)
         else:
@@ -393,11 +482,10 @@ with tab1:
         with st.expander("💡 Insight tren nasional"):
             st.markdown(
                 """
-- Komoditas beras (premium, medium, SPHP) cenderung stabil dengan kenaikan bertahap.
-- Cabai dan bawang menunjukkan lonjakan harga yang tajam dan berulang (shock musiman).
-- Minyak goreng dan gula naik lebih pelan namun relatif konsisten.
-- Secara agregat, rata-rata harga pangan nasional selama periode ini hanya naik tipis
-  dan belum menunjukkan tren kenaikan tajam yang permanen.
+- Beras (premium, medium, SPHP) cenderung stabil dengan kenaikan bertahap.
+- Cabai dan bawang menunjukkan lonjakan harga tajam dan berulang (shock musiman).
+- Minyak goreng dan gula naik lebih pelan namun cenderung konsisten.
+- Secara agregat, rata-rata harga pangan nasional selama periode ini lebih banyak naik tipis ketimbang lonjakan permanen.
 """
             )
 
@@ -408,9 +496,13 @@ with tab1:
 # ==============================
 with tab2:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Sebaran Harga & Perbandingan Antar Kabupaten/Kota</div>', unsafe_allow_html=True)
+    st.markmarkdown(
+        '<div class="section-title"><span class="icon">🗺️</span>'
+        'Sebaran Harga & Perbandingan Antar Kabupaten/Kota</div>',
+        unsafe_allow_html=True
+    )
     st.markdown(
-        '<div class="section-caption">Lihat peta sebaran harga dan daftar kab/kota dengan harga tertinggi maupun terendah untuk setiap komoditas pangan.</div>',
+        '<div class="section-caption">Lihat peta harga dan daftar kab/kota dengan harga tertinggi maupun terendah untuk setiap komoditas.</div>',
         unsafe_allow_html=True
     )
 
@@ -435,7 +527,6 @@ with tab2:
         if wins_reg.empty:
             st.warning("Tidak ada data untuk rentang waktu yang dipilih.")
         else:
-            # Deteksi kolom kab/kota
             if "Kab/Kota" in wins_reg.columns:
                 lokasi_col = "Kab/Kota"
             else:
@@ -447,20 +538,17 @@ with tab2:
                 options=komoditas_cols
             )
 
-            # PETA SEBARAN HARGA
             st.markdown("#### Peta Sebaran Harga per Kabupaten/Kota")
 
             if df_geo is None:
                 st.info("File data geospasial (data_harga_pangan_with_latlon_FINAL.csv) tidak ditemukan. Peta tidak dapat ditampilkan.")
             else:
-                # Filter df_geo berdasar periode yang sama (kalau ada kolom Periode)
                 if "Periode" in df_geo.columns:
                     mask_geo_reg = df_geo["Periode"].dt.date.between(start_date_reg, end_date_reg)
                     geo_filtered = df_geo[mask_geo_reg].copy()
                 else:
                     geo_filtered = df_geo.copy()
 
-                # Deteksi kolom kab/kota di geo_filtered
                 if "Kab/Kota" in geo_filtered.columns:
                     kab_col_geo = "Kab/Kota"
                 else:
@@ -500,7 +588,6 @@ with tab2:
                         )
                         st.plotly_chart(fig_map, use_container_width=True)
 
-            # RATA-RATA PER KAB/KOTA & JUMLAH KAB/KOTA
             mean_by_region = (
                 wins_reg
                 .groupby(lokasi_col)[kom_for_region]
@@ -532,7 +619,6 @@ with tab2:
 
                 c1, c2 = st.columns(2)
 
-                # Kab/Kota termahal
                 with c1:
                     fig_top = px.bar(
                         top_expensive.sort_values(kom_for_region),
@@ -553,7 +639,6 @@ with tab2:
                     )
                     st.plotly_chart(fig_top, use_container_width=True)
 
-                # Kab/Kota termurah
                 with c2:
                     fig_bottom = px.bar(
                         top_cheap.sort_values(kom_for_region, ascending=False),
@@ -585,9 +670,9 @@ with tab2:
                 with st.expander("💡 Insight perbandingan wilayah"):
                     st.markdown(
                         """
-- Beberapa kab/kota terpencil cenderung memiliki harga rata-rata lebih tinggi karena biaya logistik dan pasokan.
-- Kab/kota sentra produksi agraris sering memiliki harga lebih rendah dan lebih stabil.
-- Peta di atas menunjukkan pola spasial, sedangkan bar chart merangkum daftar kab/kota termurah dan termahal.
+- Kab/kota terpencil cenderung punya harga lebih tinggi karena biaya logistik & akses pasokan.
+- Sentra produksi pertanian biasanya punya harga lebih rendah dan lebih stabil.
+- Peta memberi konteks spasial, sedangkan bar chart merangkum daftar kab/kota termurah dan termahal.
 """
                     )
 
@@ -598,9 +683,13 @@ with tab2:
 # ==============================
 with tab3:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Korelasi Harga Antar Komoditas Pangan</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-caption">Identifikasi kelompok komoditas yang bergerak searah (misalnya sesama beras atau bumbu) dan yang relatif independen.</div>',
+        '<div class="section-title"><span class="icon">🔗</span>'
+        'Korelasi Harga Antar Komoditas Pangan</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="section-caption">Lihat komoditas mana yang harga-nya cenderung jalan bareng (misalnya sesama cabai/bawang) dan yang bergerak sendiri-sendiri.</div>',
         unsafe_allow_html=True
     )
 
@@ -609,7 +698,6 @@ with tab3:
     else:
         st.markdown("#### Pilih Komoditas untuk Analisis Korelasi")
 
-        # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
 
         selected_corr = []
@@ -617,10 +705,8 @@ with tab3:
         if pilih_semua:
             selected_corr = komoditas_cols.copy()
         else:
-            # Tampilkan checkbox per komoditas dalam beberapa kolom agar rapi
             n_cols = 3
             cols = st.columns(n_cols)
-
             for i, kom in enumerate(komoditas_cols):
                 col = cols[i % n_cols]
                 cek = col.checkbox(kom, value=False, key=f"corr_{kom}")
@@ -651,11 +737,9 @@ with tab3:
             with st.expander("💡 Insight korelasi harga antar komoditas"):
                 st.markdown(
                     """
-- Komoditas sejenis atau substitusi (misalnya berbagai jenis beras, tepung terigu, dan sesama cabai/bawang)
-  cenderung memiliki korelasi positif tinggi dan bergerak searah.
-- Komoditas dengan rantai pasok dan pola musiman berbeda menunjukkan korelasi rendah atau negatif,
-  artinya kenaikan harga di satu komoditas tidak selalu diikuti komoditas lain.
-- Informasi ini penting untuk mengidentifikasi kelompok komoditas yang perlu dipantau dan distabilisasi secara bersama-sama.
+- Komoditas sejenis/substitusi (misalnya berbagai jenis beras, sesama cabai/bawang) cenderung punya korelasi positif tinggi.
+- Komoditas dengan rantai pasok & pola musiman berbeda bisa berkorelasi rendah atau negatif.
+- Informasi korelasi membantu identifikasi kelompok komoditas yang perlu dipantau & distabilisasi bersama.
 """
                 )
 
