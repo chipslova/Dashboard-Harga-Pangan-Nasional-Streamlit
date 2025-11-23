@@ -175,8 +175,12 @@ st.markdown(
         color: #6b7280;
     }
 
+    /* Susun value + delta ke samping, bukan atas-bawah */
     div[data-testid="stMetric"] > div {
-        color: #111827;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 0.35rem;
     }
 
     /* Sliders: abu-abu */
@@ -435,16 +439,11 @@ with tab1:
             # Metric 1: Harga awal
             m1.metric("Harga awal", f"Rp {start_price:,.0f}")
 
-            # Siapkan delta nominal untuk disamping Rp
-            delta_nominal_val = growth_nominal
-            delta_nominal_str = f"{delta_nominal_val:,.0f}"
-            if delta_nominal_val > 0:
-                delta_nominal_str = f"+{delta_nominal_str}"
-
-            # Metric 2: Harga akhir + delta dalam satu baris
+            # Metric 2: Harga akhir + delta (panah + warna hijau/merah)
             m2.metric(
                 "Harga akhir",
-                f"Rp {end_price:,.0f} ({delta_nominal_str})"
+                f"Rp {end_price:,.0f}",
+                f"{growth_nominal:,.0f}"
             )
 
             # Metric 3: Pertumbuhan rata-rata (persen)
