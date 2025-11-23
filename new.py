@@ -224,7 +224,7 @@ st.markdown(
           Membaca denyut harga pangan dari rumah tangga hingga pasar tradisional.
         </div>
         <div class="hero-text-sub">
-          Setiap titik data pada dashboard ini adalah cerita harga di warteg, angkringan, tukang gorengan, hingga pasar tradisional.
+          Setiap titik data pada dashboard ini adalah cerita dari harga seblak, warteg, angkringan, tukang gorengan, hingga pasar tradisional.
         </div>
         <div class="hero-chip-row">
           <div class="hero-chip">Tren harga nasional per komoditas</div>
@@ -292,9 +292,9 @@ else:
 
 mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
-mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
+mcol2.metric("Jumlah Kabupaten/Kota", f"{n_kabkota}")
 
-st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
+st.caption("Sumber: Panel Harga Pangan Nasional Pada Website Badan Pangan Nasional")
 
 # garis tipis dengan jarak kecil sebelum tabs
 st.markdown(
@@ -329,7 +329,7 @@ with tab1:
         unsafe_allow_html=True
     )
     st.markdown(
-        '<div class="section-caption">Eksplorasi pergerakan harga per komoditas dan tren agregat nasional dari waktu ke waktu.</div>',
+        '<div class="section-caption">Pergerakan harga per komoditas pangan utama di indonesia dan tren agregat nasional dari waktu ke waktu.</div>',
         unsafe_allow_html=True
     )
 
@@ -338,7 +338,7 @@ with tab1:
 
     # Slider full-width (periode)
     start_date, end_date = st.slider(
-        "Periode analisis",
+        "Pilih periode analisis",
         min_value=min_date.date(),
         max_value=max_date.date(),
         value=(min_date.date(), max_date.date()),
@@ -350,7 +350,7 @@ with tab1:
 
     with col_f1:
         group_choice = st.selectbox(
-            "Kelompok komoditas",
+            "Pilih kelompok komoditas",
             options=list(groups.keys()),
             key="group_tren"
         )
@@ -359,7 +359,7 @@ with tab1:
         candidate_koms = groups[group_choice] if groups[group_choice] else komoditas_cols
         default_koms = candidate_koms[:5] if len(candidate_koms) >= 5 else candidate_koms
         selected_koms = st.multiselect(
-            "Komoditas yang ditampilkan",
+            "Pilih komoditas yang ditampilkan",
             options=candidate_koms,
             default=default_koms,
             key="komoditas_tren"
@@ -439,7 +439,7 @@ with tab1:
         with st.expander("💡 Insight tren nasional"):
             st.markdown(
                 """
-- Komoditas beras (premium, medium, SPHP) cenderung stabil dengan kenaikan bertahap.
+- Komoditas beras premium, medium, SPHP cenderung stabil dengan kenaikan bertahap.
 - Cabai dan bawang menunjukkan lonjakan harga yang tajam dan berulang.
 - Minyak goreng dan gula naik lebih pelan namun relatif konsisten.
 - Secara agregat, rata-rata harga pangan nasional selama periode ini hanya naik tipis
