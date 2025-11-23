@@ -329,15 +329,6 @@ tab1, tab2, tab3 = st.tabs([
 ])
 
 # ==============================
-# TABS
-# ==============================
-tab1, tab2, tab3 = st.tabs([
-    "📈 Tren Nasional",
-    "🗺️ Perbandingan Wilayah",
-    "🔗 Korelasi Komoditas"
-])
-
-# ==============================
 # TAB 1 – TREN NASIONAL
 # ==============================
 with tab1:
