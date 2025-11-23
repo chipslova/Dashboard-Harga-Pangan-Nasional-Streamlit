@@ -201,9 +201,9 @@ st.markdown(
         color: #111827;
     }
 
-    /* Sliders & select widgets */
+    /* Sliders: abu-abu saja, bukan gradient biru-hijau */
     .stSlider > div > div > div {
-        background: #d1d5db;  /* abu-abu netral */
+        background: #d1d5db;
     }
 
     .stSelectbox, .stMultiSelect {
@@ -222,7 +222,7 @@ st.markdown(
 # ==============================
 # HEADER
 # ==============================
-st.markdown(unsafe_allow_html=True)
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
     '<div class="title-flag"><span class="id-flag"></span>'
@@ -305,7 +305,7 @@ clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
 # ==============================
-# RINGKASAN ANGKA (tanpa jumlah periode pengamatan & tanpa "Sumber:")
+# RINGKASAN ANGKA + SUMBER
 # ==============================
 n_komoditas = len(komoditas_cols)
 if "Kab/Kota" in clean.columns:
@@ -317,6 +317,8 @@ else:
 mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
 mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
+
+st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
 
 # Kelompok komoditas (dipakai di Tab Tren Nasional)
 groups = {
