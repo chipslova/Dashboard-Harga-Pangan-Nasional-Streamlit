@@ -35,7 +35,23 @@ st.markdown(
         max-width: 1200px;
     }
 
-    /* Judul model street-food, tapi warna biru-hijau */
+    /* Bendera Indonesia di kiri judul */
+    .id-flag {
+        display: inline-block;
+        width: 26px;
+        height: 18px;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px rgba(148,163,184,0.7);
+        background: linear-gradient(
+            to bottom,
+            #dc2626 0,
+            #dc2626 50%,
+            #f9fafb 50%,
+            #f9fafb 100%
+        );
+    }
+
+    /* Judul utama */
     .title-flag {
         font-size: 2.2rem;
         font-weight: 800;
@@ -47,22 +63,6 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
-    }
-
-    /* Flag kecil di kiri judul */
-    .title-flag::before {
-        content: "";
-        display: inline-block;
-        width: 26px;
-        height: 18px;
-        border-radius: 4px;
-        box-shadow: 0 0 0 1px rgba(148,163,184,0.6);
-        background: linear-gradient(
-            135deg,
-            #0ea5e9 0,
-            #22c55e 50%,
-            #a5b4fc 100%
-        );
     }
 
     .subtitle {
@@ -226,7 +226,8 @@ st.markdown(
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
-    '<div class="title-flag">Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
+    '<div class="title-flag"><span class="id-flag"></span>'
+    'Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
     unsafe_allow_html=True
 )
 st.markdown(
@@ -237,11 +238,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Hero card ala street food, tapi biru-hijau
+# Hero card: emoji nasi, ikan, telur, grafik statistik
 st.markdown(
     """
     <div class="hero-card">
-      <div class="hero-emoji">🍚📊🛒</div>
+      <div class="hero-emoji">🍚🐟🥚📈</div>
       <div>
         <div class="hero-text-title">
           Membaca denyut harga pangan dari rumah tangga, pasar tradisional, hingga ritel modern.
@@ -458,10 +459,7 @@ with tab1:
             m1, m2, m3 = st.columns(3)
             m1.metric("Harga awal", f"Rp {start_price:,.0f}")
             m2.metric("Harga akhir", f"Rp {end_price:,.0f}", f"{growth_nominal:,.0f}")
-            m3.metric(
-                "Pertumbuhan rata-rata",
-                f"{growth_percent:.2f}%"
-            )
+            m3.metric("Pertumbuhan rata-rata", f"{growth_percent:.2f}%")
             st.markdown(
                 '<div class="caption-muted">'
                 "Ringkasan ini merangkum dinamika harga rata-rata nasional pada komoditas dan periode yang dipilih."
