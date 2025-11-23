@@ -202,7 +202,7 @@ st.markdown(
         box-shadow: 0 10px 20px rgba(127, 29, 29, 0.25);
     }
 
-    /* Metric cards: kayak label harga di kios */
+    /* Metric cards */
     div[data-testid="stMetric"] {
         background: #fffbeb;
         padding: 0.75rem 0.85rem;
@@ -220,7 +220,7 @@ st.markdown(
         color: #111827;
     }
 
-    /* Slider: skala cabai–sate–daun */
+    /* Slider */
     .stSlider > div > div > div {
         background: linear-gradient(90deg,#b91c1c,#f97316,#22c55e);
     }
@@ -489,14 +489,14 @@ with tab1:
 """
             )
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ==============================
 # TAB 2 – PETA & PERBANDINGAN WILAYAH
 # ==============================
 with tab2:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markmarkdown(
+    st.markdown(
         '<div class="section-title"><span class="icon">🗺️</span>'
         'Sebaran Harga & Perbandingan Antar Kabupaten/Kota</div>',
         unsafe_allow_html=True
@@ -527,6 +527,7 @@ with tab2:
         if wins_reg.empty:
             st.warning("Tidak ada data untuk rentang waktu yang dipilih.")
         else:
+            # Deteksi kolom kab/kota
             if "Kab/Kota" in wins_reg.columns:
                 lokasi_col = "Kab/Kota"
             else:
@@ -538,17 +539,20 @@ with tab2:
                 options=komoditas_cols
             )
 
+            # PETA SEBARAN HARGA
             st.markdown("#### Peta Sebaran Harga per Kabupaten/Kota")
 
             if df_geo is None:
                 st.info("File data geospasial (data_harga_pangan_with_latlon_FINAL.csv) tidak ditemukan. Peta tidak dapat ditampilkan.")
             else:
+                # Filter df_geo berdasar periode
                 if "Periode" in df_geo.columns:
                     mask_geo_reg = df_geo["Periode"].dt.date.between(start_date_reg, end_date_reg)
                     geo_filtered = df_geo[mask_geo_reg].copy()
                 else:
                     geo_filtered = df_geo.copy()
 
+                # Deteksi kolom kab/kota di geo_filtered
                 if "Kab/Kota" in geo_filtered.columns:
                     kab_col_geo = "Kab/Kota"
                 else:
@@ -588,6 +592,7 @@ with tab2:
                         )
                         st.plotly_chart(fig_map, use_container_width=True)
 
+            # RATA-RATA PER KAB/KOTA
             mean_by_region = (
                 wins_reg
                 .groupby(lokasi_col)[kom_for_region]
@@ -619,6 +624,7 @@ with tab2:
 
                 c1, c2 = st.columns(2)
 
+                # Kab/Kota termahal
                 with c1:
                     fig_top = px.bar(
                         top_expensive.sort_values(kom_for_region),
@@ -639,6 +645,7 @@ with tab2:
                     )
                     st.plotly_chart(fig_top, use_container_width=True)
 
+                # Kab/Kota termurah
                 with c2:
                     fig_bottom = px.bar(
                         top_cheap.sort_values(kom_for_region, ascending=False),
@@ -676,7 +683,7 @@ with tab2:
 """
                     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ==============================
 # TAB 3 – KORELASI KOMODITAS
@@ -743,4 +750,4 @@ with tab3:
 """
                 )
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
