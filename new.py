@@ -120,11 +120,11 @@ st.markdown(
     }
 
     .section-title {
-        font-size: 1.05rem;
-        font-weight: 650;
+        font-size: 1.25rem;
+        font-weight: 700;
         color: #111827;
-        margin-bottom: 0.1rem;
-        margin-top: 0.4rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.2rem;
     }
 
     .section-caption {
@@ -327,7 +327,7 @@ tab1, tab2, tab3 = st.tabs([
 # ==============================
 with tab1:
     st.markdown(
-        '<div class="section-title">Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>',
+        '<div class="section-title">📈 Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>',
         unsafe_allow_html=True
     )
     st.markdown(
@@ -454,7 +454,7 @@ with tab1:
 # ==============================
 with tab2:
     st.markdown(
-        '<div class="section-title">Perbandingan Harga Antar Kabupaten/Kota</div>',
+        '<div class="section-title">🗺️ Perbandingan Harga Antar Kabupaten/Kota</div>',
         unsafe_allow_html=True
     )
     st.markdown(
@@ -644,7 +644,7 @@ with tab2:
 # ==============================
 with tab3:
     st.markdown(
-        '<div class="section-title">Korelasi Harga Antar Komoditas</div>',
+        '<div class="section-title">🔗 Korelasi Harga Antar Komoditas</div>',
         unsafe_allow_html=True
     )
     st.markdown(
