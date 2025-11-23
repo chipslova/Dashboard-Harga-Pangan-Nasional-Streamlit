@@ -242,7 +242,7 @@ st.markdown(
 st.markdown(
     """
     <div class="hero-card">
-      <div class="hero-emoji">🍚🐟🥚📈</div>
+      <div class="hero-emoji">🍚🐟🥚📊</div>
       <div>
         <div class="hero-text-title">
           Membaca denyut harga pangan dari rumah tangga, pasar tradisional, hingga ritel modern.
