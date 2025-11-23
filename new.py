@@ -654,7 +654,7 @@ with tab3:
     if wins.empty:
         st.warning("Dataset kosong.")
     else:
-        pilih,
+        "pilih,"
 
         # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
