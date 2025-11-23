@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # ==============================
-# CONFIG & GLOBAL STYLE
+# CONFIG
 # ==============================
 st.set_page_config(
     page_title="Dashboard Harga Pangan Nasional",
@@ -13,7 +13,9 @@ st.set_page_config(
     page_icon="🛒"
 )
 
-# ---- Custom CSS ----
+# ==============================
+# GLOBAL STYLE (CSS)
+# ==============================
 st.markdown(
     """
     <style>
@@ -23,7 +25,6 @@ st.markdown(
         color: #111827;
     }
 
-    /* Header atas (yang ada tombol Share / GitHub) */
     header[data-testid="stHeader"] {
         background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 40%, #fefce8 100%);
         border-bottom: 1px solid rgba(148,163,184,0.35);
@@ -51,7 +52,6 @@ st.markdown(
         );
     }
 
-    /* Judul utama */
     .title-flag {
         font-size: 2.2rem;
         font-weight: 800;
@@ -71,7 +71,7 @@ st.markdown(
         margin-bottom: 0.8rem;
     }
 
-    /* Hero card ala street food biru-hijau */
+    /* Hero card */
     .hero-card {
         display: flex;
         align-items: center;
@@ -161,8 +161,8 @@ st.markdown(
         box-shadow: 0 10px 18px rgba(15,23,42,0.18);
     }
 
-    /* Metrics */
-    div[data-testid="stMetric"] {
+    /* Custom metric cards (bukan st.metric) */
+    .metric-card {
         background: #f9fafb;
         padding: 0.75rem 0.85rem;
         border-radius: 0.9rem;
@@ -170,17 +170,36 @@ st.markdown(
         box-shadow: 0 14px 28px rgba(15,23,42,0.08);
     }
 
-    div[data-testid="stMetric"] > label {
+    .metric-label {
         font-size: 0.78rem;
         color: #6b7280;
+        margin-bottom: 0.15rem;
     }
 
-    /* Susun value + delta ke samping, bukan atas-bawah */
-    div[data-testid="stMetric"] > div {
+    .metric-row {
         display: flex;
         flex-direction: row;
         align-items: baseline;
-        gap: 0.35rem;
+        gap: 0.4rem;
+    }
+
+    .metric-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .metric-delta {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .metric-delta.positive {
+        color: #16a34a;
+    }
+
+    .metric-delta.negative {
+        color: #dc2626;
     }
 
     /* Sliders: abu-abu */
@@ -219,7 +238,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Hero card: nasi, ikan, telur, grafik statistik
 st.markdown(
     """
     <div class="hero-card">
@@ -252,7 +270,6 @@ def load_data():
     clean = pd.read_csv("data/data_harga_pangan_wide_imputed.csv")
     wins = pd.read_csv("data/data_harga_pangan_wide_imputed_winsor.csv")
 
-    # Pastikan kolom tanggal benar
     if "Periode" not in clean.columns:
         clean.rename(columns={clean.columns[0]: "Periode"}, inplace=True)
     if "Periode" not in wins.columns:
@@ -261,13 +278,11 @@ def load_data():
     clean["Periode"] = pd.to_datetime(clean["Periode"])
     wins["Periode"] = pd.to_datetime(wins["Periode"])
 
-    # Deteksi kolom komoditas (numerik, exclude kolom teknis)
     exclude_cols = ["Tahun", "Bulan_num", "bulan_num", "latitude", "longitude", "SPHP_covered"]
     komoditas_cols = [
         c for c in clean.select_dtypes(include=[np.number]).columns
         if c not in exclude_cols
     ]
-
     return clean, wins, komoditas_cols
 
 
@@ -287,7 +302,7 @@ clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
 # ==============================
-# RINGKASAN ANGKA + SUMBER
+# RINGKASAN ANGKA HEADER + SUMBER
 # ==============================
 n_komoditas = len(komoditas_cols)
 if "Kab/Kota" in clean.columns:
@@ -296,19 +311,40 @@ else:
     obj_cols = clean.select_dtypes(include="object").columns
     n_kabkota = clean[obj_cols[0]].nunique() if len(obj_cols) > 0 else 505
 
-mcol1, mcol2 = st.columns(2)
-mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
-mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
+h1, h2 = st.columns(2)
+h1.markdown(
+    f"""
+    <div class="metric-card">
+      <div class="metric-label">Jumlah komoditas</div>
+      <div class="metric-row">
+        <div class="metric-value">{n_komoditas}</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+h2.markdown(
+    f"""
+    <div class="metric-card">
+      <div class="metric-label">Kabupaten/Kota terliput</div>
+      <div class="metric-row">
+        <div class="metric-value">{n_kabkota}</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
 
-# Garis tipis dekat dengan tabs
 st.markdown(
     "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
     unsafe_allow_html=True
 )
 
-# Kelompok komoditas (dipakai di Tab Tren Nasional)
+# ==============================
+# GROUPS
+# ==============================
 groups = {
     "Semua": komoditas_cols,
     "Beras": [c for c in komoditas_cols if "beras" in c.lower()],
@@ -342,7 +378,6 @@ with tab1:
     min_date = clean["Periode"].min()
     max_date = clean["Periode"].max()
 
-    # Slider full-width (periode)
     start_date, end_date = st.slider(
         "Periode analisis",
         min_value=min_date.date(),
@@ -351,17 +386,14 @@ with tab1:
         format="MMM YYYY"
     )
 
-    # Kolom untuk pengaturan komoditas
-    col_f1, col_f2 = st.columns([1, 2])
-
-    with col_f1:
+    c_f1, c_f2 = st.columns([1, 2])
+    with c_f1:
         group_choice = st.selectbox(
             "Kelompok komoditas",
             options=list(groups.keys()),
             key="group_tren"
         )
-
-    with col_f2:
+    with c_f2:
         candidate_koms = groups[group_choice] if groups[group_choice] else komoditas_cols
         default_koms = candidate_koms[:5] if len(candidate_koms) >= 5 else candidate_koms
         selected_koms = st.multiselect(
@@ -371,19 +403,15 @@ with tab1:
             key="komoditas_tren"
         )
 
-    # Filter data sesuai periode
     mask_clean_tren = clean["Periode"].dt.date.between(start_date, end_date)
     clean_tren = clean[mask_clean_tren].copy()
 
     if clean_tren.empty:
         st.warning("Tidak ada data untuk periode yang dipilih.")
     else:
-        # Rata-rata nasional per periode
         avg_trend = clean_tren.groupby("Periode")[komoditas_cols].mean().reset_index()
 
-        # Grafik tren per komoditas
         st.markdown("#### Tren Komoditas Terpilih")
-
         if not selected_koms:
             st.info("Pilih minimal satu komoditas untuk melihat grafik tren.")
         else:
@@ -398,7 +426,6 @@ with tab1:
                     name=col,
                     hovertemplate="%{x|%b %Y}<br>Rp%{y:,.0f}<extra></extra>"
                 ))
-
             fig_trend.update_layout(
                 xaxis_title="Periode",
                 yaxis_title="Harga rata-rata (Rp)",
@@ -418,7 +445,7 @@ with tab1:
             )
             st.plotly_chart(fig_trend, use_container_width=True)
 
-        # Harga rata-rata nasional
+        # Ringkasan pergerakan harga
         if selected_koms:
             monthly_avg_all = avg_trend[selected_koms].mean(axis=1)
         else:
@@ -430,24 +457,52 @@ with tab1:
             growth_nominal = end_price - start_price
             growth_percent = (growth_nominal / start_price * 100) if start_price != 0 else 0.0
 
-            # =========================
-            # Ringkasan Pergerakan Harga
-            # =========================
+            # tentukan tanda dan warna delta
+            arrow = "▲" if growth_nominal >= 0 else "▼"
+            delta_class = "positive" if growth_nominal >= 0 else "negative"
+            delta_nominal_str = f"{growth_nominal:,.0f}"
+            if growth_nominal > 0:
+                delta_nominal_str = f"+{delta_nominal_str}"
+
             st.markdown("#### Ringkasan Pergerakan Harga")
-            m1, m2, m3 = st.columns(3)
+            r1, r2, r3 = st.columns(3)
 
-            # Metric 1: Harga awal
-            m1.metric("Harga awal", f"Rp {start_price:,.0f}")
-
-            # Metric 2: Harga akhir + delta (panah + warna hijau/merah)
-            m2.metric(
-                "Harga akhir",
-                f"Rp {end_price:,.0f}",
-                f"{growth_nominal:,.0f}"
+            r1.markdown(
+                f"""
+                <div class="metric-card">
+                  <div class="metric-label">Harga awal</div>
+                  <div class="metric-row">
+                    <div class="metric-value">Rp {start_price:,.0f}</div>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
-            # Metric 3: Pertumbuhan rata-rata (persen)
-            m3.metric("Pertumbuhan rata-rata", f"{growth_percent:.2f}%")
+            r2.markdown(
+                f"""
+                <div class="metric-card">
+                  <div class="metric-label">Harga akhir</div>
+                  <div class="metric-row">
+                    <div class="metric-value">Rp {end_price:,.0f}</div>
+                    <div class="metric-delta {delta_class}">{arrow} {delta_nominal_str}</div>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            r3.markdown(
+                f"""
+                <div class="metric-card">
+                  <div class="metric-label">Pertumbuhan rata-rata</div>
+                  <div class="metric-row">
+                    <div class="metric-value">{growth_percent:.2f}%</div>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
             st.markdown(
                 '<div class="caption-muted">'
@@ -501,7 +556,6 @@ with tab2:
         if wins_reg.empty:
             st.warning("Tidak ada data untuk rentang waktu yang dipilih.")
         else:
-            # Deteksi kolom kab/kota
             if "Kab/Kota" in wins_reg.columns:
                 lokasi_col = "Kab/Kota"
             else:
@@ -513,20 +567,17 @@ with tab2:
                 options=komoditas_cols
             )
 
-            # PETA SEBARAN HARGA
             st.markdown("#### Peta Sebaran Harga per Kabupaten/Kota")
 
             if df_geo is None:
                 st.info("File data geospasial (data_harga_pangan_with_latlon_FINAL.csv) tidak ditemukan. Peta tidak dapat ditampilkan.")
             else:
-                # Filter df_geo berdasar periode yang sama (kalau ada kolom Periode)
                 if "Periode" in df_geo.columns:
                     mask_geo_reg = df_geo["Periode"].dt.date.between(start_date_reg, end_date_reg)
                     geo_filtered = df_geo[mask_geo_reg].copy()
                 else:
                     geo_filtered = df_geo.copy()
 
-                # Deteksi kolom kab/kota di geo_filtered
                 if "Kab/Kota" in geo_filtered.columns:
                     kab_col_geo = "Kab/Kota"
                 else:
@@ -566,7 +617,6 @@ with tab2:
                         )
                         st.plotly_chart(fig_map, use_container_width=True)
 
-            # RATA-RATA PER KAB/KOTA & JUMLAH KAB/KOTA
             mean_by_region = (
                 wins_reg
                 .groupby(lokasi_col)[kom_for_region]
@@ -598,7 +648,6 @@ with tab2:
 
                 c1, c2 = st.columns(2)
 
-                # Kab/Kota termahal
                 with c1:
                     fig_top = px.bar(
                         top_expensive.sort_values(kom_for_region),
@@ -619,7 +668,6 @@ with tab2:
                     )
                     st.plotly_chart(fig_top, use_container_width=True)
 
-                # Kab/Kota termurah
                 with c2:
                     fig_bottom = px.bar(
                         top_cheap.sort_values(kom_for_region, ascending=False),
@@ -675,18 +723,14 @@ with tab3:
     else:
         st.markdown("#### Pilih Komoditas untuk Analisis Korelasi")
 
-        # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
-
         selected_corr = []
 
         if pilih_semua:
             selected_corr = komoditas_cols.copy()
         else:
-            # Tampilkan checkbox per komoditas dalam beberapa kolom agar rapi
             n_cols = 3
             cols = st.columns(n_cols)
-
             for i, kom in enumerate(komoditas_cols):
                 col = cols[i % n_cols]
                 cek = col.checkbox(kom, value=False, key=f"corr_{kom}")
@@ -697,7 +741,6 @@ with tab3:
             st.info("Centang minimal dua komoditas untuk melihat matriks korelasi.")
         else:
             corr = wins[selected_corr].corr()
-
             fig_corr = px.imshow(
                 corr,
                 text_auto=True,
@@ -711,7 +754,6 @@ with tab3:
                 paper_bgcolor="rgba(0,0,0,0)",
                 font=dict(color="#111827", size=11)
             )
-
             st.plotly_chart(fig_corr, use_container_width=True)
 
             with st.expander("💡 Insight korelasi harga antar komoditas"):
