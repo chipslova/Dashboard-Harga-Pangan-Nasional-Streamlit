@@ -203,7 +203,7 @@ st.markdown(
 
     /* Sliders & select widgets */
     .stSlider > div > div > div {
-        background: linear-gradient(90deg,#0ea5e9,#22c55e);
+        background: #d1d5db;  /* abu-abu netral */
     }
 
     .stSelectbox, .stMultiSelect {
