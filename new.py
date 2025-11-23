@@ -222,7 +222,7 @@ st.markdown(
 # ==============================
 # HEADER
 # ==============================
-st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown(unsafe_allow_html=True)
 
 st.markdown(
     '<div class="title-flag"><span class="id-flag"></span>'
