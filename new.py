@@ -296,7 +296,13 @@ mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
 mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
 
-st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
+# Sumber – dekat dengan tabs (margin kecil)
+st.markdown(
+    '<p style="font-size:0.8rem; color:#6b7280; margin-top:0.25rem; margin-bottom:0.25rem;">'
+    'Sumber: Panel Harga Pangan Nasional (konsumen)'
+    '</p>',
+    unsafe_allow_html=True
+)
 
 # Kelompok komoditas (dipakai di Tab Tren Nasional)
 groups = {
@@ -307,7 +313,8 @@ groups = {
     "Bahan Pokok Lain": [c for c in komoditas_cols if any(k in c.lower() for k in ["minyak", "gula", "tepung", "kedelai", "garam"])]
 }
 
-st.markdown("---")
+# (tidak pakai garis pemisah supaya lebih dekat ke tabs)
+# st.markdown("---")
 
 # ==============================
 # TABS
