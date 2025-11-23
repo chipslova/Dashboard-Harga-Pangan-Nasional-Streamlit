@@ -179,7 +179,7 @@ st.markdown(
         color: #111827;
     }
 
-    /* Sliders: abu-abu saja */
+    /* Sliders: abu-abu */
     .stSlider > div > div > div {
         background: #d1d5db;
     }
@@ -298,6 +298,12 @@ mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
 
 st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
 
+# garis tipis dengan jarak kecil sebelum tabs
+st.markdown(
+    "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
+    unsafe_allow_html=True
+)
+
 # Kelompok komoditas (dipakai di Tab Tren Nasional)
 groups = {
     "Semua": komoditas_cols,
@@ -306,12 +312,6 @@ groups = {
     "Bumbu Dapur": [c for c in komoditas_cols if any(k in c.lower() for k in ["cabai", "cabe", "bawang"])],
     "Bahan Pokok Lain": [c for c in komoditas_cols if any(k in c.lower() for k in ["minyak", "gula", "tepung", "kedelai", "garam"])]
 }
-
-# Jarak kecil + garis halus sebelum tabs
-st.markdown(
-    "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
-    unsafe_allow_html=True
-)
 
 # ==============================
 # TABS
@@ -414,7 +414,7 @@ with tab1:
             )
             st.plotly_chart(fig_trend, use_container_width=True)
 
-        # Harga rata-rata nasional
+        # Harga rata-rata nasional (agregat)
         if selected_koms:
             monthly_avg_all = avg_trend[selected_koms].mean(axis=1)
         else:
@@ -580,7 +580,7 @@ with tab2:
 
                 c1, c2 = st.columns(2)
 
-                # Kab/Kota termahal
+                # Kab/Kota termahal – merah/oranye (senada YlOrRd atas)
                 with c1:
                     fig_top = px.bar(
                         top_expensive.sort_values(kom_for_region),
@@ -592,7 +592,7 @@ with tab2:
                     )
                     fig_top.update_traces(
                         hovertemplate="<b>%{y}</b><br>Rp %{x:,.0f}<extra></extra>",
-                        marker_color="#fb7185"
+                        marker_color="#d73027"  # merah-oranye tua
                     )
                     fig_top.update_layout(
                         paper_bgcolor="rgba(0,0,0,0)",
@@ -601,7 +601,7 @@ with tab2:
                     )
                     st.plotly_chart(fig_top, use_container_width=True)
 
-                # Kab/Kota termurah
+                # Kab/Kota termurah – kuning lembut (senada YlOrRd bawah)
                 with c2:
                     fig_bottom = px.bar(
                         top_cheap.sort_values(kom_for_region, ascending=False),
@@ -613,7 +613,7 @@ with tab2:
                     )
                     fig_bottom.update_traces(
                         hovertemplate="<b>%{y}</b><br>Rp %{x:,.0f}<extra></extra>",
-                        marker_color="#4ade80"
+                        marker_color="#fee08b"  # kuning lembut
                     )
                     fig_bottom.update_layout(
                         paper_bgcolor="rgba(0,0,0,0)",
