@@ -456,7 +456,7 @@ with tab2:
         unsafe_allow_html=True
     )
     st.markdown(
-        '<div class="section-caption">Lihat sebaran spasial harga dan daftar kab/kota dengan harga tertinggi maupun terendah.</div>',
+        '<div class="section-caption">Sebaran spasial harga dan kabupaten/kota dengan harga tertinggi maupun terendah.</div>',
         unsafe_allow_html=True
     )
 
@@ -467,7 +467,7 @@ with tab2:
         max_date_w = wins["Periode"].max()
 
         start_date_reg, end_date_reg = st.slider(
-            "Periode analisis perbandingan wilayah",
+            "Pilih periode analisis",
             min_value=min_date_w.date(),
             max_value=max_date_w.date(),
             value=(min_date_w.date(), max_date_w.date()),
@@ -559,7 +559,7 @@ with tab2:
                 st.info("Tidak ada data setelah agregasi per kab/kota.")
             else:
                 n_region = st.slider(
-                    "Jumlah kab/kota termahal & termurah yang ditampilkan",
+                    "Pilih jumlah kab/kota termahal & termurah yang ditampilkan",
                     min_value=3,
                     max_value=min(25, len(mean_by_region)),
                     value=10
@@ -622,8 +622,8 @@ with tab2:
 
                 st.markdown(
                     '<div class="caption-muted">'
-                    "Bar chart merangkum kab/kota dengan harga rata-rata tertinggi dan terendah "
-                    f"untuk komoditas {kom_for_region} pada periode analisis."
+                    "Bar chart diatas merangkum kabupaten/kota dengan harga rata-rata tertinggi dan terendah "
+                    f"untuk komoditas {kom_for_region} pada periode analisis yang dipilih."
                     "</div>",
                     unsafe_allow_html=True
                 )
@@ -631,9 +631,9 @@ with tab2:
                 with st.expander("💡 Insight perbandingan wilayah"):
                     st.markdown(
                         """
-- Beberapa kab/kota terpencil cenderung memiliki harga rata-rata lebih tinggi karena biaya logistik dan pasokan.
-- Kab/kota sentra produksi agraris sering memiliki harga lebih rendah dan lebih stabil.
-- Peta di atas menunjukkan pola spasial, sedangkan bar chart merangkum daftar kab/kota termurah dan termahal.
+- Beberapa kabupaten/kota terpencil cenderung memiliki harga rata-rata lebih tinggi karena biaya logistik dan pasokan.
+- Kabupaten/kota sentra produksi agraris sering memiliki harga lebih rendah dan lebih stabil.
+- Peta di atas menunjukkan pola spasial, sedangkan bar chart merangkum daftar kabupaten/kota termurah dan termahal.
 """
                     )
 
