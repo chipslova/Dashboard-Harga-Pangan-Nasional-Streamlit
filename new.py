@@ -13,7 +13,7 @@ st.set_page_config(
     page_icon="🛒"
 )
 
-# ---- Custom CSS (clean, bright, simple) ----
+# ---- Custom CSS (clean, bright, simple + street-food-ish header) ----
 st.markdown(
     """
     <style>
@@ -35,20 +35,88 @@ st.markdown(
         max-width: 1200px;
     }
 
-    .big-title {
+    /* Judul model street-food, tapi warna biru-hijau */
+    .title-flag {
         font-size: 2.2rem;
         font-weight: 800;
         letter-spacing: -0.03em;
         background: linear-gradient(120deg,#0ea5e9,#22c55e);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0.1rem;
+        margin-bottom: 0.2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    /* Flag kecil di kiri judul */
+    .title-flag::before {
+        content: "";
+        display: inline-block;
+        width: 26px;
+        height: 18px;
+        border-radius: 4px;
+        box-shadow: 0 0 0 1px rgba(148,163,184,0.6);
+        background: linear-gradient(
+            135deg,
+            #0ea5e9 0,
+            #22c55e 50%,
+            #a5b4fc 100%
+        );
     }
 
     .subtitle {
         font-size: 0.95rem;
         color: #4b5563;
         margin-bottom: 0.8rem;
+    }
+
+    /* Hero card ala street food, tapi nuansa biru-hijau */
+    .hero-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 1rem;
+        background:
+            radial-gradient(circle at top left, rgba(239, 246, 255, 0.95), rgba(219, 234, 254, 0.9)),
+            linear-gradient(120deg, rgba(14, 165, 233, 0.14), rgba(34, 197, 94, 0.12));
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+        margin-bottom: 0.9rem;
+    }
+
+    .hero-emoji {
+        font-size: 2.3rem;
+        filter: drop-shadow(0 6px 8px rgba(15,23,42,0.25));
+    }
+
+    .hero-text-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.1rem;
+    }
+
+    .hero-text-sub {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+
+    .hero-chip-row {
+        margin-top: 0.35rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .hero-chip {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(248, 250, 252, 0.96);
+        border: 1px dashed rgba(14, 165, 233, 0.7);
+        color: #0369a1;
     }
 
     .pill {
@@ -157,12 +225,40 @@ st.markdown(
 # extra space biar judul nggak kepotong atas
 st.markdown("<br><br>", unsafe_allow_html=True)
 
-st.markdown('<div class="big-title">Dashboard Harga Pangan Konsumen di Indonesia</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="title-flag">Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
+    unsafe_allow_html=True
+)
 st.markdown(
     '<div class="subtitle">'
     'Analisis pola, tren, dan perbandingan harga komoditas pangan utama di 505 Kabupaten/Kota Indonesia '
     '<span style="color:#6b7280;">(Januari 2024 – Agustus 2025)</span>'
     '</div>',
+    unsafe_allow_html=True
+)
+
+# Hero card ala street food, tapi biru-hijau
+st.markdown(
+    """
+    <div class="hero-card">
+      <div class="hero-emoji">🍚📊🛒</div>
+      <div>
+        <div class="hero-text-title">
+          Membaca denyut harga pangan dari rumah tangga, pasar tradisional, hingga ritel modern.
+        </div>
+        <div class="hero-text-sub">
+          Dashboard ini merangkum dinamika harga beras, cabai, bawang, minyak goreng, dan komoditas pangan lain
+          di 505 kabupaten/kota di Indonesia.
+        </div>
+        <div class="hero-chip-row">
+          <div class="hero-chip">Tren harga nasional per komoditas</div>
+          <div class="hero-chip">Peta sebaran harga antar wilayah</div>
+          <div class="hero-chip">Daftar kab/kota termurah & termahal</div>
+          <div class="hero-chip">Korelasi harga antar komoditas</div>
+        </div>
+      </div>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
@@ -348,10 +444,8 @@ with tab1:
 
         # Harga rata-rata nasional
         if selected_koms:
-            title_tren_umum = "Rata-rata Harga Pangan (Komoditas Terpilih)"
             monthly_avg_all = avg_trend[selected_koms].mean(axis=1)
         else:
-            title_tren_umum = "Tren Umum Harga Pangan Nasional (Semua Komoditas)"
             monthly_avg_all = avg_trend[komoditas_cols].mean(axis=1)
 
         if len(monthly_avg_all) > 1:
@@ -366,8 +460,7 @@ with tab1:
             m2.metric("Harga akhir", f"Rp {end_price:,.0f}", f"{growth_nominal:,.0f}")
             m3.metric(
                 "Pertumbuhan rata-rata",
-                f"{growth_percent:.2f}%" +
-                ("" if selected_koms else " (semua komoditas)")
+                f"{growth_percent:.2f}%"
             )
             st.markdown(
                 '<div class="caption-muted">'
