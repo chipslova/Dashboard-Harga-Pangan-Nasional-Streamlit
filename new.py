@@ -654,7 +654,7 @@ with tab3:
     if wins.empty:
         st.warning("Dataset kosong.")
     else:
-        "pilih,"
+        "Pilih komoditas untuk melihat korelasi harga",
 
         # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
@@ -700,7 +700,7 @@ with tab3:
             with st.expander("💡 Insight korelasi harga antar komoditas"):
                 st.markdown(
                     """
-- Komoditas sejenis atau substitusi (misalnya berbagai jenis beras, tepung terigu, dan sesama cabai/bawang)
+- Komoditas sejenis atau substitusi seperti berbagai jenis beras, tepung terigu, dan sesama cabai/bawang
   cenderung memiliki korelasi positif tinggi dan bergerak searah.
 - Komoditas dengan rantai pasok dan pola musiman berbeda menunjukkan korelasi rendah atau negatif,
   artinya kenaikan harga di satu komoditas tidak selalu diikuti komoditas lain.
