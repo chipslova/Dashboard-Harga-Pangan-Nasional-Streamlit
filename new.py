@@ -547,6 +547,7 @@ with tab2:
                         st.plotly_chart(fig_map, use_container_width=True)
 
             # RATA-RATA PER KAB/KOTA & JUMLAH KAB/KOTA
+            st.markdown("#### Kabupaten/Kota Dengan Komoditas {kom_for_region} Termahal dan Termurah")
             mean_by_region = (
                 wins_reg
                 .groupby(lokasi_col)[kom_for_region]
