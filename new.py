@@ -222,7 +222,7 @@ with col_badge1:
 with col_badge2:
     st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
 
-# sedikit ringkasan angka
+# Ringkasan angka
 n_komoditas = len(komoditas_cols)
 n_periode = clean["Periode"].nunique()
 if "Kab/Kota" in clean.columns:
