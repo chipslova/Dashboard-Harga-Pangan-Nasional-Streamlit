@@ -13,7 +13,7 @@ st.set_page_config(
     page_icon="🛒"
 )
 
-# ---- Custom CSS (clean, bright, simple + street-food-ish header) ----
+# Custom CSS
 st.markdown(
     """
     <style>
@@ -23,7 +23,6 @@ st.markdown(
         color: #111827;
     }
 
-    /* Biar area paling atas (yang ada tombol Share / GitHub) nyatu dengan background */
     header[data-testid="stHeader"] {
         background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 40%, #fefce8 100%);
         border-bottom: 1px solid rgba(148,163,184,0.35);
@@ -204,13 +203,13 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
     '<div class="title-flag"><span class="id-flag"></span>'
-    'Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
+    'Dashboard Harga Pangan di 505 Kabupaten/Kota di Indonesia 🛒</div>',
     unsafe_allow_html=True
 )
 st.markdown(
     '<div class="subtitle">'
     'Analisis pola, tren, dan perbandingan harga komoditas pangan utama di 505 Kabupaten/Kota Indonesia '
-    '<span style="color:#6b7280;">(Januari 2024 – Agustus 2025)</span>'
+    '<span style="color:#6b7280;"> periode Januari 2024 – Agustus 2025</span>'
     '</div>',
     unsafe_allow_html=True
 )
@@ -222,11 +221,10 @@ st.markdown(
       <div class="hero-emoji">🍚🐟🥚📊</div>
       <div>
         <div class="hero-text-title">
-          Membaca denyut harga pangan dari rumah tangga, pasar tradisional, hingga ritel modern.
+          Membaca denyut harga pangan dari rumah tangga hingga pasar tradisional.
         </div>
         <div class="hero-text-sub">
-          Dashboard ini merangkum dinamika harga beras, cabai, bawang, minyak goreng, dan komoditas pangan lain
-          di 505 kabupaten/kota di Indonesia.
+          Setiap titik data pada dashboard ini adalah cerita harga di warteg, angkringan, tukang gorengan, hingga pasar tradisional.
         </div>
         <div class="hero-chip-row">
           <div class="hero-chip">Tren harga nasional per komoditas</div>
