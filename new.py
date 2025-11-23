@@ -226,7 +226,7 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
     '<div class="title-flag"><span class="id-flag"></span>'
-    'Dashboard Harga Pangan Konsumen di Indonesia</div>',
+    'Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
     unsafe_allow_html=True
 )
 st.markdown(
@@ -305,7 +305,7 @@ clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
 # ==============================
-# RINGKASAN ANGKA (tanpa jumlah periode pengamatan)
+# RINGKASAN ANGKA (tanpa jumlah periode pengamatan & tanpa "Sumber:")
 # ==============================
 n_komoditas = len(komoditas_cols)
 if "Kab/Kota" in clean.columns:
