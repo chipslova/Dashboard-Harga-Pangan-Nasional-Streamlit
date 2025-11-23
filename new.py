@@ -547,7 +547,7 @@ with tab2:
                         st.plotly_chart(fig_map, use_container_width=True)
 
             # RATA-RATA PER KAB/KOTA & JUMLAH KAB/KOTA
-            st.markdown("#### Kabupaten/Kota Dengan Komoditas {kom_for_region} Termahal dan Termurah")
+            st.markdown("#### Kabupaten/Kota Dengan Komoditas Termahal dan Termurah")
             mean_by_region = (
                 wins_reg
                 .groupby(lokasi_col)[kom_for_region]
@@ -647,14 +647,14 @@ with tab3:
         unsafe_allow_html=True
     )
     st.markdown(
-        '<div class="section-caption">Identifikasi kelompok komoditas yang bergerak searah dan yang relatif independen.</div>',
+        '<div class="section-caption">Korelasi antar kelompok komoditas yang bergerak searah dan yang relatif independen.</div>',
         unsafe_allow_html=True
     )
 
     if wins.empty:
         st.warning("Dataset kosong.")
     else:
-        st.markdown("#### Pilih Komoditas untuk Analisis Korelasi")
+        pilih,
 
         # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
@@ -692,6 +692,8 @@ with tab3:
                 paper_bgcolor="rgba(0,0,0,0)",
                 font=dict(color="#111827", size=11)
             )
+
+            st.markdown("#### Korelasi Antar Komoditas")
 
             st.plotly_chart(fig_corr, use_container_width=True)
 
