@@ -294,7 +294,7 @@ mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
 mcol2.metric("Jumlah Kabupaten/Kota", f"{n_kabkota}")
 
-st.caption("Sumber: Panel Harga Pangan Nasional Pada Website Badan Pangan Nasional")
+st.caption("Sumber : Panel Harga Pangan Nasional Pada Website Badan Pangan Nasional")
 
 # garis tipis dengan jarak kecil sebelum tabs
 st.markdown(
@@ -654,8 +654,6 @@ with tab3:
     if wins.empty:
         st.warning("Dataset kosong.")
     else:
-        "Pilih komoditas untuk melihat korelasi harga",
-
         # Checkbox "Pilih semua"
         pilih_semua = st.checkbox("Pilih semua komoditas", value=True)
 
