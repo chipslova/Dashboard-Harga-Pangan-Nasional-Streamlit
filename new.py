@@ -13,7 +13,7 @@ st.set_page_config(
     page_icon="🛒"
 )
 
-# ---- Custom CSS (clean, bright, simple + street-food-ish header) ----
+# ---- Custom CSS ----
 st.markdown(
     """
     <style>
@@ -23,7 +23,7 @@ st.markdown(
         color: #111827;
     }
 
-    /* Biar area paling atas (yang ada tombol Share / GitHub) nyatu dengan background */
+    /* Header atas (yang ada tombol Share / GitHub) */
     header[data-testid="stHeader"] {
         background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 40%, #fefce8 100%);
         border-bottom: 1px solid rgba(148,163,184,0.35);
@@ -71,7 +71,7 @@ st.markdown(
         margin-bottom: 0.8rem;
     }
 
-    /* Hero card ala street food, tapi nuansa biru-hijau */
+    /* Hero card ala street food biru-hijau */
     .hero-card {
         display: flex;
         align-items: center;
@@ -179,7 +179,7 @@ st.markdown(
         color: #111827;
     }
 
-    /* Sliders: abu-abu saja */
+    /* Sliders: abu-abu */
     .stSlider > div > div > div {
         background: #d1d5db;
     }
@@ -215,7 +215,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Hero card: emoji nasi, ikan, telur, grafik statistik
+# Hero card: nasi, ikan, telur, grafik statistik
 st.markdown(
     """
     <div class="hero-card">
@@ -296,11 +296,11 @@ mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
 mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
 
-# Sumber – dekat dengan tabs (margin kecil)
+st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
+
+# Garis tipis dekat dengan tabs
 st.markdown(
-    '<p style="font-size:0.8rem; color:#6b7280; margin-top:0.25rem; margin-bottom:0.25rem;">'
-    'Sumber: Panel Harga Pangan Nasional (konsumen)'
-    '</p>',
+    "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
     unsafe_allow_html=True
 )
 
@@ -312,12 +312,6 @@ groups = {
     "Bumbu Dapur": [c for c in komoditas_cols if any(k in c.lower() for k in ["cabai", "cabe", "bawang"])],
     "Bahan Pokok Lain": [c for c in komoditas_cols if any(k in c.lower() for k in ["minyak", "gula", "tepung", "kedelai", "garam"])]
 }
-
-# Jarak kecil + garis halus sebelum tabs
-st.markdown(
-    "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
-    unsafe_allow_html=True
-)
 
 # ==============================
 # TABS
@@ -432,11 +426,30 @@ with tab1:
             growth_nominal = end_price - start_price
             growth_percent = (growth_nominal / start_price * 100) if start_price != 0 else 0.0
 
+            # =========================
+            # Ringkasan Pergerakan Harga
+            # =========================
             st.markdown("#### Ringkasan Pergerakan Harga")
             m1, m2, m3 = st.columns(3)
+
+            # Metric 1: Harga awal
             m1.metric("Harga awal", f"Rp {start_price:,.0f}")
-            m2.metric("Harga akhir", f"Rp {end_price:,.0f}", f"{growth_nominal:,.0f}")
+
+            # Siapkan delta nominal untuk disamping Rp
+            delta_nominal_val = growth_nominal
+            delta_nominal_str = f"{delta_nominal_val:,.0f}"
+            if delta_nominal_val > 0:
+                delta_nominal_str = f"+{delta_nominal_str}"
+
+            # Metric 2: Harga akhir + delta dalam satu baris
+            m2.metric(
+                "Harga akhir",
+                f"Rp {end_price:,.0f} ({delta_nominal_str})"
+            )
+
+            # Metric 3: Pertumbuhan rata-rata (persen)
             m3.metric("Pertumbuhan rata-rata", f"{growth_percent:.2f}%")
+
             st.markdown(
                 '<div class="caption-muted">'
                 "Ringkasan ini merangkum dinamika harga rata-rata nasional pada komoditas dan periode yang dipilih."
