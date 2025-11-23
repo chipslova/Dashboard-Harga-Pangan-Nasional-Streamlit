@@ -119,34 +119,12 @@ st.markdown(
         color: #0369a1;
     }
 
-    .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.7rem;
-        border-radius: 999px;
-        background: rgba(14, 165, 233, 0.08);
-        border: 1px solid rgba(14, 165, 233, 0.22);
-        color: #0369a1;
-        font-size: 0.78rem;
-        font-weight: 500;
-        margin-right: 0.35rem;
-    }
-
-    .section-card {
-        background: rgba(255,255,255,0.94);
-        border-radius: 1rem;
-        padding: 1.2rem 1.2rem 1rem 1.2rem;
-        border: 1px solid rgba(148,163,184,0.35);
-        box-shadow: 0 18px 35px rgba(15,23,42,0.08);
-        margin-bottom: 1.2rem;
-    }
-
     .section-title {
         font-size: 1.05rem;
         font-weight: 650;
         color: #111827;
         margin-bottom: 0.1rem;
+        margin-top: 0.4rem;
     }
 
     .section-caption {
@@ -201,7 +179,7 @@ st.markdown(
         color: #111827;
     }
 
-    /* Sliders: abu-abu saja, bukan gradient biru-hijau */
+    /* Sliders: abu-abu saja */
     .stSlider > div > div > div {
         background: #d1d5db;
     }
@@ -344,8 +322,10 @@ tab1, tab2, tab3 = st.tabs([
 # TAB 1 – TREN NASIONAL
 # ==============================
 with tab1:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section-title">Perkembangan Rata-rata Harga Komoditas Pangan Nasional</div>',
+        unsafe_allow_html=True
+    )
     st.markdown(
         '<div class="section-caption">Eksplorasi pergerakan harga per komoditas dan tren agregat nasional dari waktu ke waktu.</div>',
         unsafe_allow_html=True
@@ -465,14 +445,14 @@ with tab1:
 """
             )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 # ==============================
 # TAB 2 – PERBANDINGAN WILAYAH
 # ==============================
 with tab2:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Perbandingan Harga Antar Kabupaten/Kota</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section-title">Perbandingan Harga Antar Kabupaten/Kota</div>',
+        unsafe_allow_html=True
+    )
     st.markdown(
         '<div class="section-caption">Lihat sebaran spasial harga dan daftar kab/kota dengan harga tertinggi maupun terendah.</div>',
         unsafe_allow_html=True
@@ -655,14 +635,14 @@ with tab2:
 """
                     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 # ==============================
 # TAB 3 – KORELASI KOMODITAS
 # ==============================
 with tab3:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Korelasi Harga Antar Komoditas</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section-title">Korelasi Harga Antar Komoditas</div>',
+        unsafe_allow_html=True
+    )
     st.markdown(
         '<div class="section-caption">Identifikasi kelompok komoditas yang bergerak searah dan yang relatif independen.</div>',
         unsafe_allow_html=True
@@ -722,5 +702,3 @@ with tab3:
 - Informasi ini penting untuk mengidentifikasi kelompok komoditas yang perlu dipantau dan distabilisasi secara bersama-sama.
 """
                 )
-
-    st.markdown('</div>', unsafe_allow_html=True)
