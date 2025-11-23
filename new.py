@@ -222,12 +222,11 @@ st.markdown(
 # ==============================
 # HEADER
 # ==============================
-# extra space biar judul nggak kepotong atas
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
     '<div class="title-flag"><span class="id-flag"></span>'
-    'Dashboard Harga Pangan Konsumen di Indonesia 🛒</div>',
+    'Dashboard Harga Pangan Konsumen di Indonesia</div>',
     unsafe_allow_html=True
 )
 st.markdown(
@@ -305,33 +304,19 @@ def load_geo():
 clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
-# Info kecil di header
-col_badge1, col_badge2 = st.columns([2, 1])
-with col_badge1:
-    st.markdown(
-        """
-        <span class="pill">📊 Rata-rata nasional & tren per komoditas</span>
-        <span class="pill">🗺️ Perbandingan antar kabupaten/kota</span>
-        <span class="pill">🔗 Korelasi harga komoditas</span>
-        """,
-        unsafe_allow_html=True
-    )
-with col_badge2:
-    st.caption("Sumber: Panel Harga Pangan Nasional (konsumen)")
-
-# Ringkasan angka
+# ==============================
+# RINGKASAN ANGKA (tanpa jumlah periode pengamatan)
+# ==============================
 n_komoditas = len(komoditas_cols)
-n_periode = clean["Periode"].nunique()
 if "Kab/Kota" in clean.columns:
     n_kabkota = clean["Kab/Kota"].nunique()
 else:
     obj_cols = clean.select_dtypes(include="object").columns
     n_kabkota = clean[obj_cols[0]].nunique() if len(obj_cols) > 0 else 505
 
-mcol1, mcol2, mcol3 = st.columns(3)
+mcol1, mcol2 = st.columns(2)
 mcol1.metric("Jumlah komoditas", f"{n_komoditas}")
-mcol2.metric("Jumlah periode pengamatan", f"{n_periode}")
-mcol3.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
+mcol2.metric("Kabupaten/Kota terliput", f"{n_kabkota}")
 
 # Kelompok komoditas (dipakai di Tab Tren Nasional)
 groups = {
