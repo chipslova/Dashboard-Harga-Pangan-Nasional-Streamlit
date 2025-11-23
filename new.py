@@ -313,8 +313,20 @@ groups = {
     "Bahan Pokok Lain": [c for c in komoditas_cols if any(k in c.lower() for k in ["minyak", "gula", "tepung", "kedelai", "garam"])]
 }
 
-# (tidak pakai garis pemisah supaya lebih dekat ke tabs)
-# st.markdown("---")
+# Jarak kecil + garis halus sebelum tabs
+st.markdown(
+    "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
+    unsafe_allow_html=True
+)
+
+# ==============================
+# TABS
+# ==============================
+tab1, tab2, tab3 = st.tabs([
+    "📈 Tren Nasional",
+    "🗺️ Perbandingan Wilayah",
+    "🔗 Korelasi Komoditas"
+])
 
 # ==============================
 # TABS
