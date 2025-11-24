@@ -220,10 +220,8 @@ st.markdown(
           Menelusuri fluktuasi harga bahan pokok dari waktu ke waktu dan antarwilayah
         </div>
         <div class="hero-text-sub">
-          Dalam beberapa tahun terakhir, fluktuasi harga pangan di Indonesia menjadi isu penting yang berdampak langsung terhadap kestabilan ekonomi dan kesejahteraan masyarakat. 
-          Harga komoditas pangan seperti beras, cabai, bawang, telur, gula, dan minyak goreng sering mengalami perubahan signifikan di berbagai daerah, yang dipengaruhi oleh faktor distribusi, musim, serta kebijakan pemerintah. 
-          Kondisi ini menuntut adanya sistem pemantauan yang mampu menyajikan informasi harga secara akurat, cepat, dan mudah dipahami. Oleh karena itu, Dashboard ini berfokus pada Tren Nasional, perbandingan wilayah dan 
-          korelasi komoditas di 505 Kabupaten/Kota Indonesia yang bertujuan untuk memberikan gambaran menyeluruh mengenai perkembangan harga komoditas pangan di tingkat Nasional.
+          Dashboard ini menyajikan gambaran menyeluruh mengenai perkembangan dan perbedaan harga pangan di 505 kabupaten/kota di Indonesia, 
+          dengan visualisasi tren nasional, perbandingan wilayah, dan keterkaitan antar komoditas
         </div>
         <div class="hero-chip-row">
           <div class="hero-chip">Tren harga nasional per komoditas</div>
