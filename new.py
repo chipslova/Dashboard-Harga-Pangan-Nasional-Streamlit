@@ -4,9 +4,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
-# ==============================
 # CONFIG & GLOBAL STYLE
-# ==============================
 st.set_page_config(
     page_title="Dashboard Harga Pangan Nasional",
     layout="wide",
@@ -196,9 +194,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ==============================
 # HEADER
-# ==============================
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 st.markdown(
@@ -214,17 +210,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Hero card: emoji nasi, ikan, telur, grafik statistik
+# Menambahkan Hero card: emoji nasi, ikan, telur, grafik statistik serta deskipsi dashboard
 st.markdown(
     """
     <div class="hero-card">
       <div class="hero-emoji">🍚🐟🥚📊</div>
       <div>
         <div class="hero-text-title">
-          Membaca denyut harga pangan dari rumah tangga hingga pasar tradisional.
+          Menelusuri fluktuasi harga bahan pokok dari waktu ke waktu dan antarwilayah
         </div>
         <div class="hero-text-sub">
-          Setiap titik data pada dashboard ini adalah cerita dari harga seblak, warteg, angkringan, tukang gorengan, hingga pasar tradisional.
+          Dalam beberapa tahun terakhir, fluktuasi harga pangan di Indonesia menjadi isu penting yang berdampak langsung terhadap kestabilan ekonomi dan kesejahteraan masyarakat. 
+          Harga komoditas pangan seperti beras, cabai, bawang, telur, gula, dan minyak goreng sering mengalami perubahan signifikan di berbagai daerah, yang dipengaruhi oleh faktor distribusi, musim, serta kebijakan pemerintah. 
+          Kondisi ini menuntut adanya sistem pemantauan yang mampu menyajikan informasi harga secara akurat, cepat, dan mudah dipahami. Oleh karena itu, Dashboard ini berfokus pada Tren Nasional, perbandingan wilayah dan 
+          korelasi komoditas di 505 Kabupaten/Kota Indonesia yang bertujuan untuk memberikan gambaran menyeluruh mengenai perkembangan harga komoditas pangan di tingkat Nasional.
         </div>
         <div class="hero-chip-row">
           <div class="hero-chip">Tren harga nasional per komoditas</div>
@@ -238,15 +237,13 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ==============================
-# LOAD DATA
-# ==============================
+# MENGHUBUNGKAN DENGAN DATA SET
 @st.cache_data
 def load_data():
     clean = pd.read_csv("data/data_harga_pangan_wide_imputed.csv")
     wins = pd.read_csv("data/data_harga_pangan_wide_imputed_winsor.csv")
 
-    # Pastikan kolom tanggal benar
+    # Memastikan kolom tanggal sudah benar
     if "Periode" not in clean.columns:
         clean.rename(columns={clean.columns[0]: "Periode"}, inplace=True)
     if "Periode" not in wins.columns:
@@ -255,7 +252,7 @@ def load_data():
     clean["Periode"] = pd.to_datetime(clean["Periode"])
     wins["Periode"] = pd.to_datetime(wins["Periode"])
 
-    # Deteksi kolom komoditas (numerik, exclude kolom teknis)
+    # Mendeteksi kolom komoditas (numerik, exclude kolom teknis)
     exclude_cols = ["Tahun", "Bulan_num", "bulan_num", "latitude", "longitude", "SPHP_covered"]
     komoditas_cols = [
         c for c in clean.select_dtypes(include=[np.number]).columns
@@ -280,9 +277,7 @@ def load_geo():
 clean, wins, komoditas_cols = load_data()
 df_geo = load_geo()
 
-# ==============================
 # RINGKASAN ANGKA + SUMBER
-# ==============================
 n_komoditas = len(komoditas_cols)
 if "Kab/Kota" in clean.columns:
     n_kabkota = clean["Kab/Kota"].nunique()
@@ -296,7 +291,7 @@ mcol2.metric("Jumlah Kabupaten/Kota", f"{n_kabkota}")
 
 st.caption("Sumber : Panel Harga Pangan Nasional Pada Website Badan Pangan Nasional")
 
-# garis tipis dengan jarak kecil sebelum tabs
+# Menambahkan garis tipis dengan jarak kecil sebelum tabs
 st.markdown(
     "<hr style='margin-top: 0.3rem; margin-bottom: 0.6rem; border-color: rgba(148,163,184,0.6);'>",
     unsafe_allow_html=True
@@ -311,9 +306,7 @@ groups = {
     "Bahan Pokok Lain": [c for c in komoditas_cols if any(k in c.lower() for k in ["minyak", "gula", "tepung", "kedelai", "garam"])]
 }
 
-# ==============================
 # TABS
-# ==============================
 tab1, tab2, tab3 = st.tabs([
     "📈 Tren Nasional",
     "🗺️ Perbandingan Wilayah",
