@@ -511,7 +511,7 @@ with tab2:
                         geo_filtered
                         .groupby([kab_col_geo, "latitude", "longitude"], as_index=False)[kom_for_region]
                         .mean()
-                        .dropna(subset=["latitude", "longitude"])
+                        .dropna(subset=["latitude", "longitude", kom_for_region])  # Drop NaN from relevant columns
                     )
 
                     if map_agg.empty:
@@ -522,7 +522,7 @@ with tab2:
                             lat="latitude",
                             lon="longitude",
                             color=kom_for_region,
-                            size=kom_for_region,
+                            size=kom_for_region,  # Gunakan kolom ukuran setelah NaN dihapus
                             hover_name=kab_col_geo,
                             hover_data={kom_for_region: ":,.0f"},
                             color_continuous_scale="YlOrRd",
